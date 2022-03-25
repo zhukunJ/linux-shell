@@ -1,65 +1,108 @@
-# linux-shell
+### 下载logstash包
 
 
-自建logstash同步
-依赖Java环境
-自行安装Java环境
 
-下载logstash包
-[root@juke-huike-test1-node1 ~]# wget https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.tar.gz
-[root@juke-huike-test1-node1 ~]# tar xzf logstash-6.7.0.tar.gz && cd logstash-6.7.0/config/
-准备配置文件模版
-[root@juke-huike-test1-node1 config]# cat kuick.conf
+```
+[root@juke-huike-test1-node1 ~]# wget https://artifacts.elastic.co/downloads/logstash/logstash-6.7.0.tar.gz 
+```
+
+
+
+### 进入目录
+
+
+
+
+
+```
+[root@juke-huike-test1-node1 ~]# cd kuick/node1
+```
+
+
+
+### 
+
+
+
+### 准备配置文件模版
+
+```
 input {
   elasticsearch {
-    hosts => [ "es-cn-mp90wvbo9001fojq4.public.elasticsearch.aliyuncs.com:9200" ]
+    hosts => [ "es-cn-mp90wt1bn0019rd7g.elasticsearch.aliyuncs.com:9200" ]
     user => "elastic"
-    password => "0RmbgFuzYbv2oSDGn0cV"
+    password => "Uv4GDM4FnjF2oClGI8im"
     index =>
     query => '{ "query": { "query_string": { "query": "*" } } }'
-    size => 5000
-    scroll => "5m"
+    size => 10000
+    scroll => "50m"
     docinfo => true
   }
 }
 
-filter {}
+filter {
 
+}
 
 output {
   elasticsearch {
-    hosts => [ "es-cn-mp91e59f20002va73.elasticsearch.aliyuncs.com:9200" ]
+    hosts => [ "es-cn-4591fkfqh001rjagm.elasticsearch.aliyuncs.com:9200" ]
     user => "elastic"
-    password => "fgElwzGY2M4YAyMgwHav"
+    password => "Uv4GDM4FnjF2oClGI8im"
     document_type => "%{[@metadata][_type]}"
     index =>
     document_id => "%{[@metadata][_id]}"
   }
 
-
   stdout {
   codec => "dots"
- 
-需要同步索引存放文件
-[root@juke-huike-test1-node1 config]# cat indexs
-person_member person_member
-im_like_info im_like_info
-im_comment_info im_comment_info
-im_chat_info im_chat_info
-guid_member guid_member
-chat_room_member chat_room_member
-chat_room chat_room
-add_friends add_friends
-cc-deal-form cc-deal-form-test3
+  }
+}
+```
+
+
+
+
+
+### 需要同步索引存放文件
+
+
+
+```
 app_event_push_log app_event_push_log
-执行同步脚本
-[root@juke-huike-test1-node1 config]# cat run.sh
+im_chat_info im_chat_info
+customer customer
+person_member person_member
+summary_hour_behavior_log summary_hour_behavior_log
+add_friends add_friends
+message_send_log message_send_log
+chat_room chat_room
+cc-deal_customer cc-deal_customer
+cc-deal-form-test2 cc-deal-form-test2 
+qr_code_fans qr_code_fans
+im_like_info im_like_info
+chat_room_member chat_room_member  
+index_test index_test   
+summary_hour_rule_action_log summary_hour_rule_action_log
+index_customer_with_ex index_customer_with_ex 
+promotion_plan_fans promotion_plan_fans
+guid_member guid_member
+im_comment_info im_comment_info
+```
+
+
+
+
+
+### 执行同步脚本
+
+```
 #!/bin/bash
 
 template_file="kuick.conf"
 
 process(){
-    ../bin/logstash -f kuick/${2} --path.data=data/${1}
+    ../../bin/logstash -f kuick/${2} --path.data=data/${1} -w 8 -b 6000
 }
 
 
@@ -74,8 +117,6 @@ do
 }
 done
 wait
-echo "done .
-总结
-尽量把机器外网带宽调整到最大
-同步一下启动多个logstash进程放后台运行，机器负载会稍高
-目前所有索引同步完成时间在一小时以内
+
+echo "done ..."
+```
