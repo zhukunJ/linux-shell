@@ -1,4 +1,4 @@
-### 下载logstash包
+### (如果版本不一样请下载指定版本包)下载logstash包
 
 
 
@@ -8,14 +8,14 @@
 
 
 
-### 进入目录
+### 一.进入目录
 
 
 
 
 
 ```
-[root@juke-huike-test1-node1 ~]# cd kuick/node1
+[root@juke-huike-test1-node1 ~]# cd es迁移到es利用logstash在linux下的多进程操作/kuick/node1
 ```
 
 
@@ -24,7 +24,7 @@
 
 
 
-### 准备配置文件模版
+### 二.准备配置文件模版
 
 ```
 input {
@@ -64,7 +64,7 @@ output {
 
 
 
-### 需要同步索引存放文件
+### 三.需要同步索引存放文件
 
 
 
@@ -94,7 +94,7 @@ im_comment_info im_comment_info
 
 
 
-### 执行同步脚本
+### 四.执行同步脚本
 
 ```
 #!/bin/bash
